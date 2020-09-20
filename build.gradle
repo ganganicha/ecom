@@ -1,0 +1,49 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '8'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('keycloakVersion', '7.0.1')
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile 'com.h2database:h2:1.4.192'
+//    compile 'javax.validation:validation-api:1.0.0.GA'
+    compile 'io.springfox:springfox-boot-starter:3.0.0'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '3.0.2.RELEASE'
+    // Keycloak
+    implementation 'org.keycloak:keycloak-spring-boot-starter'
+    // https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream
+    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.2.2'
+    compile 'javax.validation:validation-api:2.0.1.Final'
+    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("junit:junit:4.12")
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.keycloak.bom:keycloak-adapter-bom:${keycloakVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
