@@ -1,0 +1,446 @@
+swagger: '2.0'
+info:
+  description: ECOM Service REST API Documentation.
+  version: API TOS
+  title: ECOM Service
+  termsOfService: 'http://www-03.ibm.com/software/sla/sladb.nsf/sla/bm?Open'
+  contact:
+    name: Software Team
+    url: www.dialog.lk
+    email: SoftwareTeam@dialog.lk
+  license:
+    name: Apache License Version 2.0
+    url: 'https://github.com/IBM-Bluemix/news-aggregator/blob/master/LICENSE'
+host: 'localhost:8085'
+basePath: /
+tags:
+  - name: authenticate-controller
+    description: Authenticate Controller
+  - name: product-controller
+    description: Product Controller
+paths:
+  /login:
+    post:
+      tags:
+        - authenticate-controller
+      summary: 'add products '
+      operationId: authenticateUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: loginRequestDtO
+          description: loginRequestDtO
+          required: true
+          schema:
+            $ref: '#/definitions/LoginRequestDto'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/KeycloakLoginResponseDto'
+        '201':
+          description: Created
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 400,
+                  "error": "400 - bad request",
+                  "requestId": "e9f9as3b"
+              }
+        '401':
+          description: Unauthorized request
+        '403':
+          description: Access Denied for the Service
+        '404':
+          description: Resource Not Found
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 404,
+                  "error": "404 - not found",
+                  "requestId": "e9f9as3b"
+              }
+        '429':
+          description: Rate limiting - User has sent too many requests in a given amount of time
+        '500':
+          description: Internal Server Errors
+  /refresh-token:
+    post:
+      tags:
+        - authenticate-controller
+      summary: 'add products '
+      operationId: refreshTokenUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: refreshTokenRequestDtO
+          description: refreshTokenRequestDtO
+          required: true
+          schema:
+            $ref: '#/definitions/RefreshTokenRequestDto'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/KeycloakLoginResponseDto'
+        '201':
+          description: Created
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 400,
+                  "error": "400 - bad request",
+                  "requestId": "e9f9as3b"
+              }
+        '401':
+          description: Unauthorized request
+        '403':
+          description: Access Denied for the Service
+        '404':
+          description: Resource Not Found
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 404,
+                  "error": "404 - not found",
+                  "requestId": "e9f9as3b"
+              }
+        '429':
+          description: Rate limiting - User has sent too many requests in a given amount of time
+        '500':
+          description: Internal Server Errors
+  /v1/products:
+    get:
+      tags:
+        - product-controller
+      summary: get product details based on role
+      operationId: getProductUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: page_no
+          in: query
+          description: page_no
+          required: false
+          type: integer
+          format: int32
+        - name: page_size
+          in: query
+          description: page_size
+          required: false
+          type: integer
+          format: int32
+        - name: product_id
+          in: query
+          description: product_id
+          required: false
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+        '204':
+          description: No Content
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '400':
+          description: Bad Request
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 400,
+                  "error": "400 - bad request",
+                  "requestId": "e9f9as3b"
+              }
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '401':
+          description: Unauthorized request
+        '403':
+          description: Access Denied for the Service
+        '404':
+          description: Resource Not Found
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 404,
+                  "error": "404 - not found",
+                  "requestId": "e9f9as3b"
+              }
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '429':
+          description: Rate limiting - User has sent too many requests in a given amount of time
+        '500':
+          description: Internal Server Errors
+  /v1/products/add:
+    post:
+      tags:
+        - product-controller
+      summary: 'add products '
+      operationId: addProductUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - in: body
+          name: product
+          description: product
+          required: true
+          schema:
+            $ref: '#/definitions/ProductCreateRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+        '201':
+          description: Created
+        '204':
+          description: No Content
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '400':
+          description: Bad Request
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 400,
+                  "error": "400 - bad request",
+                  "requestId": "e9f9as3b"
+              }
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '401':
+          description: Unauthorized request
+        '403':
+          description: Access Denied for the Service
+        '404':
+          description: Resource Not Found
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 404,
+                  "error": "404 - not found",
+                  "requestId": "e9f9as3b"
+              }
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '429':
+          description: Rate limiting - User has sent too many requests in a given amount of time
+        '500':
+          description: Internal Server Errors
+  '/v1/products/{product_id}/approval':
+    put:
+      tags:
+        - product-controller
+      summary: 'Approve product to enable sale '
+      operationId: approveItemUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: product_id
+          in: path
+          description: product_id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+        '201':
+          description: Created
+        '204':
+          description: No Content
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '400':
+          description: Bad Request
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 400,
+                  "error": "400 - bad request",
+                  "requestId": "e9f9as3b"
+              }
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '401':
+          description: Unauthorized request
+        '403':
+          description: Access Denied for the Service
+        '404':
+          description: Resource Not Found
+          examples:
+            application/json: |-
+              {
+                  "timestamp": "2020-05-21T06:56:26.020+0000",
+                  "path": "/v1/profiles/{id}/approve",
+                  "status": 404,
+                  "error": "404 - not found",
+                  "requestId": "e9f9as3b"
+              }
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+        '429':
+          description: Rate limiting - User has sent too many requests in a given amount of time
+        '500':
+          description: Internal Server Errors
+definitions:
+  KeycloakLoginResponseDto:
+    type: object
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      session_state:
+        type: string
+      token_expires_in:
+        type: integer
+        format: int32
+    title: KeycloakLoginResponseDto
+  LoginRequestDto:
+    type: object
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    title: LoginRequestDto
+  Product:
+    type: object
+    properties:
+      approved_status:
+        type: boolean
+      approved_user:
+        type: string
+      available_qty:
+        type: integer
+        format: int64
+      created_date:
+        type: string
+        format: date-time
+      created_user:
+        type: string
+      face_value:
+        type: number
+        format: float
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      selling_price:
+        type: number
+        format: float
+      sold_qty:
+        type: integer
+        format: int64
+    title: Product
+  ProductCreateRequest:
+    type: object
+    required:
+      - available_qty
+      - face_value
+      - name
+      - selling_price
+      - sold_qty
+    properties:
+      available_qty:
+        type: integer
+        format: int64
+      face_value:
+        type: number
+        format: float
+      name:
+        type: string
+      selling_price:
+        type: number
+        format: float
+      sold_qty:
+        type: integer
+        format: int64
+    title: ProductCreateRequest
+  RefreshTokenRequestDto:
+    type: object
+    properties:
+      refresh_token:
+        type: string
+      userName:
+        type: string
+    title: RefreshTokenRequestDto
